@@ -2,7 +2,7 @@
 
 This module provides getting information about free space and size of hdds
 
-Instalation:
+Installation:
 
 ```
 npm i hdd-space
