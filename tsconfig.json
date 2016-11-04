@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "inlineSourceMap": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "files": [
+        "./app.ts",
+        "./node_modules/hdd-space/index.ts"
+    ]
+}
