@@ -8,7 +8,7 @@ Values represent amount of bytes.
 - Added options parameter (see below);
 - Slightly changed the output format;
 - Formated values (KB, MB, etc.);
-- Translated to TypeScript (still fully usable from vanilla JS);
+- Translated to TypeScript (fully usable from vanilla JS still);
 
 
 ## Installation:
@@ -61,7 +61,7 @@ Now the only supported opion is **format** which can be one of the following (ca
 - pb - 2 ^ 50 bytes
 - auto - messaure points will be selected automatically
 - a **function** that take a number of bytes and return whatever you'd like;
-- 
+
 #### Custom format example
 ```js
 var hddSpace = require('hdd-space');
