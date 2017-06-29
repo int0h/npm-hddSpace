@@ -1,7 +1,7 @@
 "use strict";
 
 import {exec as cmd} from 'child_process';
-import {parseOutput} from './outputParser';
+import * as parseColumns from 'parse-columns';
 
 interface IPart {
 	size: number;
@@ -27,24 +27,46 @@ function getTotal(parts: IPart[]){
 	});
 };
 
-function parseDf(output: string){
-    return parseOutput({
-        size: {
-            name: '1024-blocks',
-            align: 'right',
-            re: /\d+/
-        },
-        mp: {
-            name: 'Mounted on',
-            align: 'left',
-            re: /[\s\S]*/
-        },
-        free: {
-            name: 'Available',
-            align: 'right',
-            re: /\d+/
-        }
-    }, output);
+interface UnixPart {
+	free: number;
+	size: number;
+	mp: string;
+}
+
+type UnixPartField = 'free' | 'mp' | 'size';
+
+interface ExtractTable {
+	[id: number]: UnixPartField;
+}
+
+function parseDf(output: string): UnixPart[] {
+	const extractTable: ExtractTable = {
+		3: 'free',
+		5: 'mp',
+		1: 'size'
+	};
+	
+	let res: UnixPart[] = [];
+
+	parseColumns(output, {
+		transform: (value: string | number, header: string, columnIndex: number, rowIndex: number) => {
+			const key: UnixPartField  = extractTable[columnIndex];
+			if (!key) {
+				return;
+			}
+			let row: UnixPart = res[rowIndex - 1];
+			if (!row) {
+				row = {} as UnixPart;
+				res[rowIndex - 1] = row;
+			}
+			if (key !== 'mp') {
+				value = Number(value);
+			}
+			row[key] = value;
+		}
+	});
+
+	return res;
 };
 
 function getUnixInfo(callback: Function){
@@ -52,13 +74,13 @@ function getUnixInfo(callback: Function){
 	/*
 		[df] output example:
 
-		Filesystem     1K-blocks    Used Available Use% Mounted on
-		rootfs          15506408 1149728  13708188   8% /
-		/dev/root       15506408 1149728  13708188   8% /
-		devtmpfs          447624       0    447624   0% /dev
-		tmpfs              89548     208     89340   1% /run
-		tmpfs               5120       0      5120   0% /run/lock
-		tmpfs             179080       0    179080   0% /run/shm
+		Filesystem	 1K-blocks	Used Available Use% Mounted on
+		rootfs		  15506408 1149728  13708188   8% /
+		/dev/root	   15506408 1149728  13708188   8% /
+		devtmpfs		  447624	   0	447624   0% /dev
+		tmpfs			  89548	 208	 89340   1% /run
+		tmpfs			   5120	   0	  5120   0% /run/lock
+		tmpfs			 179080	   0	179080   0% /run/shm
 
 	*/
 
@@ -68,12 +90,12 @@ function getUnixInfo(callback: Function){
 		const parts: IPart[] = parsed
 			.map((part) => {
 				var res = {
-					size: parseInt(part.size, 10) * 1024,
-					free: parseInt(part.free, 10) * 1024,
+					size: part.size * 1024,
+					free: part.free * 1024,
 					place: part.mp,
 					mountOn: part.mp
 				};
-				if (part.mp === "/"){					
+				if (part.mp === "/"){
 					root = res;
 				};
 				return res;
@@ -81,7 +103,7 @@ function getUnixInfo(callback: Function){
 		let resultObj: IHddInfo = {
 			parts,
 			total: root as IPart
-		};					
+		};
 		callback(resultObj);
 	}); 
 };
@@ -95,11 +117,11 @@ function getWindowsInfo(callback: Function){
 	/*
 		[wmic logicaldisk get size,freespace,caption] output example:
 
-		Caption  FreeSpace    Size
-		C:       1286164480   34359734272
-		D:       1864638464   50925137920
+		Caption  FreeSpace	Size
+		C:	   1286164480   34359734272
+		D:	   1864638464   50925137920
 		E:
-		F:       77553082368  990202818560
+		F:	   77553082368  990202818560
 		G:
 		L:
 
@@ -208,9 +230,8 @@ export default function getCrossPlatformInfo(opts: IOpts, callback: Function){
 	var func = process.platform === "win32"
 		? getWindowsInfo
 		: getUnixInfo;
-	func((res: IHddInfo)=>{		
+	func((res: IHddInfo)=>{
 		callback(formatResult(opts, res));
 	});
 };
-
 module.exports = getCrossPlatformInfo;

@@ -8,10 +8,10 @@
         "inlineSourceMap": true,
         "typeRoots": [
             "./node_modules/@types"
-        ]
+        ],
+        "outDir": "./dist"
     },
-    "files": [
-        "./app.ts",
-        "./node_modules/hdd-space/index.ts"
+    "include": [
+        "./src/**.ts"
     ]
 }

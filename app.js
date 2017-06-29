@@ -1,7 +1,0 @@
-var hddSpace = require('hdd-space');
-hddSpace({
-    format: function (s) { return s.toLocaleString(); }
-}, function (info) {
-    console.log(info);
-});
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiYXBwLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLElBQUksUUFBUSxHQUFHLE9BQU8sQ0FBQyxXQUFXLENBQUMsQ0FBQztBQUNwQyxRQUFRLENBQUM7SUFDTCxNQUFNLEVBQUUsVUFBQyxDQUFTLElBQUssT0FBQSxDQUFDLENBQUMsY0FBYyxFQUFFLEVBQWxCLENBQWtCO0NBQzVDLEVBQUUsVUFBUyxJQUFTO0lBQ2pCLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLENBQUM7QUFDdEIsQ0FBQyxDQUFDLENBQUMifQ==
