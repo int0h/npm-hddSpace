@@ -17,13 +17,13 @@ interface IHddInfo {
 };
 
 function getTotal(parts: IPart[]){
-	return parts.reduce((total, part) => {			
+	return parts.reduce((total, part) => {
 		total.size += part.size;
 		total.free += part.free;
 		return total;
 	}, {
 		size: 0,
-		free: 0		
+		free: 0
 	});
 };
 
@@ -45,7 +45,7 @@ function parseDf(output: string): UnixPart[] {
 		5: 'mp',
 		1: 'size'
 	};
-	
+
 	let res: UnixPart[] = [];
 
 	parseColumns(output, {
@@ -105,7 +105,7 @@ function getUnixInfo(callback: Function){
 			total: root as IPart
 		};
 		callback(resultObj);
-	}); 
+	});
 };
 
 function isNaN(val: number){
@@ -128,7 +128,7 @@ function getWindowsInfo(callback: Function){
 
 	*/
 
-	cmd('wmic logicaldisk get size,freespace,caption', function(err, output){		
+	cmd('wmic logicaldisk get size,freespace,caption', function(err, output){
 		const parts = output
 			.split('\n')
 			.slice(1) // remove header
@@ -141,7 +141,7 @@ function getWindowsInfo(callback: Function){
 					size: parseInt(lineParts[2])
 				};
 				if (
-					isNaN(partInfo.free) || 
+					isNaN(partInfo.free) ||
 					isNaN(partInfo.size) ||
 					partInfo.place == ''
 				){
@@ -155,9 +155,9 @@ function getWindowsInfo(callback: Function){
 		const resultObj: IHddInfo = {
 			parts,
 			total: getTotal(parts)
-		};				
+		};
 		callback(resultObj);
-	}); 
+	});
 };
 
 type Formater = string | ((size: number) => (string | number));
@@ -185,13 +185,13 @@ let formaters = {
 			case 2: return formaters.mb(size);
 			case 3: return formaters.gb(size);
 			case 4: return formaters.tb(size);
-			default: return formaters.pb(size);			
+			default: return formaters.pb(size);
 		}
 	}
 };
 
 export interface IOpts {
-	format: Formater; 
+	format: Formater;
 }
 
 function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
@@ -204,7 +204,7 @@ function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
 			let newPart: IPart = {
 				free: formater(part.free),
 				size: formater(part.size),
-				place: part.place				
+				place: part.place
 			};
 			if ('letter' in part){
 				newPart.letter = part.letter;
@@ -218,7 +218,7 @@ function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
 			free: formater(res.total.free),
 			size: formater(res.total.size)
 		}
-	}; 
+	};
 	return newRes;
 };
 
