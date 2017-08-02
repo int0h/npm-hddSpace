@@ -1,5 +1,3 @@
-"use strict";
-
 import {exec as cmd} from 'child_process';
 import * as parseColumns from 'parse-columns';
 
@@ -9,14 +7,14 @@ interface IPart {
 	letter?: string;
 	mountOn?: string;
 	place?: string;
-};
+}
 
 interface IHddInfo {
 	parts: IPart[];
 	total: IPart;
-};
+}
 
-function getTotal(parts: IPart[]){
+function getTotal(parts: IPart[]) {
 	return parts.reduce((total, part) => {
 		total.size += part.size;
 		total.free += part.free;
@@ -25,7 +23,7 @@ function getTotal(parts: IPart[]){
 		size: 0,
 		free: 0
 	});
-};
+}
 
 interface UnixPart {
 	free: number;
@@ -67,9 +65,9 @@ function parseDf(output: string): UnixPart[] {
 	});
 
 	return res;
-};
+}
 
-function getUnixInfo(callback: Function){
+function getUnixInfo(callback: Function) {
 
 	/*
 		[df] output example:
@@ -85,19 +83,19 @@ function getUnixInfo(callback: Function){
 	*/
 
 	cmd('df -Pk', function(err, output){
-		var parsed = parseDf(output.trim());
+		const parsed = parseDf(output.trim());
 		let root: any = null;
 		const parts: IPart[] = parsed
 			.map((part) => {
-				var res = {
+				const res = {
 					size: part.size * 1024,
 					free: part.free * 1024,
 					place: part.mp,
 					mountOn: part.mp
 				};
-				if (part.mp === "/"){
+				if (part.mp === '/') {
 					root = res;
-				};
+				}
 				return res;
 			});
 		let resultObj: IHddInfo = {
@@ -106,13 +104,13 @@ function getUnixInfo(callback: Function){
 		};
 		callback(resultObj);
 	});
-};
+}
 
-function isNaN(val: number){
+function isNaN(val: number) {
 	return val !== val;
 }
 
-function getWindowsInfo(callback: Function){
+function getWindowsInfo(callback: Function) {
 
 	/*
 		[wmic logicaldisk get size,freespace,caption] output example:
@@ -143,10 +141,10 @@ function getWindowsInfo(callback: Function){
 				if (
 					isNaN(partInfo.free) ||
 					isNaN(partInfo.size) ||
-					partInfo.place == ''
-				){
+					partInfo.place === ''
+				) {
 					return null;
-				};
+				}
 				return partInfo;
 			})
 			.filter(function(part){
@@ -158,28 +156,28 @@ function getWindowsInfo(callback: Function){
 		};
 		callback(resultObj);
 	});
-};
+}
 
 type Formater = string | ((size: number) => (string | number));
 
 interface IFormaters {
-	[key: string]: Formater
+	[key: string]: Formater;
 }
 
 let formaters = {
-	"byte": (size: number) => (size) + ' Bytes',
-	"bit": (size: number) => (size * 8) + ' Bits',
-	"kb": (size: number) => (size / 1024).toFixed(2) + ' KB',
-	"mb": (size: number) => (size / 1024 / 1024).toFixed(2) + ' MB',
-	"gb": (size: number) => (size / 1024 / 1024 / 1024).toFixed(2) + ' GB',
-	"tb": (size: number) => (size / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' TB',
-	"pb": (size: number) => (size / 1024 / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' PB',
-	"auto": (size: number) => {
-		if (size === 0){
+	'byte': (size: number) => (size) + ' Bytes',
+	'bit': (size: number) => (size * 8) + ' Bits',
+	'kb': (size: number) => (size / 1024).toFixed(2) + ' KB',
+	'mb': (size: number) => (size / 1024 / 1024).toFixed(2) + ' MB',
+	'gb': (size: number) => (size / 1024 / 1024 / 1024).toFixed(2) + ' GB',
+	'tb': (size: number) => (size / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' TB',
+	'pb': (size: number) => (size / 1024 / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' PB',
+	'auto': (size: number) => {
+		if (size === 0) {
 			return formaters.byte(size);
-		};
+		}
 		const scale = Math.floor(Math.log(size) / Math.log(1024));
-		switch (scale){
+		switch (scale) {
 			case 0: return formaters.byte(size);
 			case 1: return formaters.kb(size);
 			case 2: return formaters.mb(size);
@@ -194,11 +192,11 @@ export interface IOpts {
 	format: Formater;
 }
 
-function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
+function formatResult(opts: IOpts, res: IHddInfo): IHddInfo {
 	let formater: Function = opts.format as Function;
-	if (typeof formater !== "function"){
+	if (typeof formater !== 'function') {
 		formater = (formaters as IFormaters)[(formater as string).toLowerCase()] as Function;
-	};
+	}
 	const newRes: IHddInfo = {
 		parts: res.parts.map(part => {
 			let newPart: IPart = {
@@ -206,12 +204,12 @@ function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
 				size: formater(part.size),
 				place: part.place
 			};
-			if ('letter' in part){
+			if ('letter' in part) {
 				newPart.letter = part.letter;
-			};
-			if ('mountOn' in part){
+			}
+			if ('mountOn' in part) {
 				newPart.mountOn = part.mountOn;
-			};
+			}
 			return newPart;
 		}),
 		total: {
@@ -220,18 +218,18 @@ function formatResult(opts: IOpts, res: IHddInfo): IHddInfo{
 		}
 	};
 	return newRes;
-};
+}
 
-export default function getCrossPlatformInfo(opts: IOpts, callback: Function){
-	if (arguments.length < 2){
+export default function getCrossPlatformInfo(opts: IOpts, callback: Function) {
+	if (arguments.length < 2) {
 		callback = opts as any as Function;
-		opts = {format: (size)=>size};
-	};
-	var func = process.platform === "win32"
+		opts = {format: (size) => size};
+	}
+	let func = process.platform === 'win32'
 		? getWindowsInfo
 		: getUnixInfo;
-	func((res: IHddInfo)=>{
+	func((res: IHddInfo) => {
 		callback(formatResult(opts, res));
 	});
-};
+}
 module.exports = getCrossPlatformInfo;
