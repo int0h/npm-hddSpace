@@ -1,6 +1,5 @@
 import {exec as cmd} from 'child_process';
 import {Part, HddInfo, getTotal} from './index';
-
 /*
 	[wmic logicaldisk get size,freespace,caption] output example:
 

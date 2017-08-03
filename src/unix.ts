@@ -43,13 +43,13 @@ function parseDf(output: string): UnixPart[] {
 /*
 		[df] output example:
 
-		Filesystem	 1K-blocks	Used Available Use% Mounted on
-		rootfs		  15506408 1149728  13708188   8% /
-		/dev/root	   15506408 1149728  13708188   8% /
-		devtmpfs		  447624	   0	447624   0% /dev
-		tmpfs			  89548	 208	 89340   1% /run
-		tmpfs			   5120	   0	  5120   0% /run/lock
-		tmpfs			 179080	   0	179080   0% /run/shm
+		Filesystem     1K-blocks    Used Available Use% Mounted on
+		rootfs          15506408 1149728  13708188   8% /
+		/dev/root       15506408 1149728  13708188   8% /
+		devtmpfs          447624       0    447624   0% /dev
+		tmpfs              89548     208     89340   1% /run
+		tmpfs               5120       0      5120   0% /run/lock
+		tmpfs             179080       0    179080   0% /run/shm
 
 	*/
 

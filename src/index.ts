@@ -100,4 +100,4 @@ export default function getCrossPlatformInfo(opts: Opts, callback: Function) {
 		callback(formatResult(opts, res));
 	});
 }
-module.exports = getCrossPlatformInfo;
+//module.exports = getCrossPlatformInfo;

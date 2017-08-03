@@ -1,28 +1,29 @@
 import {invertHashTable} from './utils';
 
-const multipliers = {
-	bit: 8,
-	byte: 1,
-	kb: 1 / 2 ** 10,
-	mb: 1 / 2 ** 20,
-	gb: 1 / 2 ** 30,
-	tb: 1 / 2 ** 40,
-	pb: 1 / 2 ** 50,
-	eb: 1 / 2 ** 60,
-	zb: 1 / 2 ** 70,
-	yb: 1 / 2 ** 80
+const multiplierPowers = {
+	bit: -3,
+	byte: 0,
+	kb: 10,
+	mb: 20,
+	gb: 30,
+	tb: 40,
+	pb: 50,
+	eb: 60,
+	zb: 70,
+	yb: 80
 };
 
-const invertedMultipliers = invertHashTable(multipliers) as {[key: number]: keyof typeof multipliers};
+const invertedMultipliers = invertHashTable(multiplierPowers) as {[key: number]: keyof typeof multiplierPowers};
 
 function capitalizeMultiplier(multiplier: string) {
-	if (multiplier.length > 2) {
-		return multiplier[0].toUpperCase() + multiplier.slice(1);
+	switch (multiplier) {
+		case 'bit': return 'Bits';
+		case 'byte': return 'Bytes';
+		default: return multiplier.toUpperCase();
 	}
-	return multiplier.toUpperCase();
 }
 
-type StaticFormat = keyof typeof multipliers | 'auto';
+type StaticFormat = keyof typeof multiplierPowers | 'auto';
 
 type FuncFormatter = ((size: number) => string | number);
 
@@ -33,13 +34,16 @@ export function formatSize(format: Format, size: number): string | number {
 		return (format as FuncFormatter)(size);
 	}
 	const staticFormat = format.toLowerCase() as StaticFormat;
-	if (staticFormat in multipliers) {
-		const multiplier = multipliers[staticFormat as keyof typeof multipliers];
-		return size * multiplier + ' ' + capitalizeMultiplier(staticFormat);
+	if (staticFormat in multiplierPowers) {
+		const power = multiplierPowers[staticFormat as keyof typeof multiplierPowers];
+		return size * (1 / 2 ** power) + ' ' + capitalizeMultiplier(staticFormat);
 	}
 	if (staticFormat === 'auto') {
-		const scale = Math.floor(Math.log(size) / Math.log(1024));
-		const unit = invertedMultipliers[scale];
+		const scale = Math.floor(Math.log(size) / Math.log(1024)) * 10;
+		let unit = invertedMultipliers[scale];
+		if (!unit) {
+			unit = scale > 80 ? 'yb' : 'byte';
+		}
 		return formatSize(unit, size);
 	}
 	console.error(`Bad format [${staticFormat}]`);
