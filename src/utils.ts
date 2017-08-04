@@ -6,3 +6,10 @@ export function invertHashTable(srcObject: any) {
 	}
 	return res;
 }
+
+export function assign(destObj: any, srcObject: any) {
+	for (let i in srcObject) {
+		destObj[i] = srcObject[i];
+	}
+	return destObj;
+}

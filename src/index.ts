@@ -1,5 +1,6 @@
 import {exec as cmd} from 'child_process';
 
+import {assign} from './utils';
 import {formatSize, Format} from './format';
 import {unixCmd, parseUnixOutput} from './unix';
 import {win32Cmd, parseWin32Output} from './win32';
@@ -100,4 +101,5 @@ export default function getCrossPlatformInfo(opts: Opts, callback: Function) {
 		callback(formatResult(opts, res));
 	});
 }
-//module.exports = getCrossPlatformInfo;
+
+module.exports = assign(getCrossPlatformInfo, module.exports);
