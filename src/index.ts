@@ -73,7 +73,11 @@ function formatResult(opts: Opts, res: HddInfo): FormatedHddInfo {
 
 type OutputParser = (output: string) => HddInfo;
 
-function runCmd(command: string, parser: OutputParser, callback: Function) {
+interface Callback<T> {
+	(err: Error | null, data?: T): void;
+}
+
+function runCmd(command: string, parser: OutputParser, callback: Callback<HddInfo>) {
 	cmd(command, (err, output) => {
 		if (err) {
 			callback(err);
@@ -89,15 +93,18 @@ function runCmd(command: string, parser: OutputParser, callback: Function) {
 	});
 }
 
-export default function getCrossPlatformInfo(opts: Opts, callback: Function) {
+export default function getCrossPlatformInfo(opts: Opts, callback: (res: FormatedHddInfo) => void) {
 	if (arguments.length < 2) {
-		callback = opts as any as Function;
+		callback = opts as any as (res: FormatedHddInfo) => void;
 		opts = {format: (size) => size};
 	}
 	const [cmd, parser] = process.platform === 'win32'
 		? [win32Cmd, parseWin32Output]
 		: [unixCmd, parseUnixOutput];
-	runCmd(cmd, parser, (res: HddInfo) => {
+	runCmd(cmd, parser, (err, res: HddInfo) => {
+		if (err) {
+			throw err;
+		}
 		callback(formatResult(opts, res));
 	});
 }

@@ -9,7 +9,9 @@
         "typeRoots": [
             "./node_modules/@types"
         ],
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "declaration": true,
+        "declarationDir": "./types"
     },
     "include": [
         "./src/index.ts",
