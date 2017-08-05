@@ -81,7 +81,7 @@
     "url": "git+https://github.com/int0h/npm-hddSpace.git"
   },
   "scripts": {
-    "test": "ava -v ./dist/tests"
+    "test": "node_modules/.bin/ava -v ./dist/tests"
   },
   "version": "1.1.1",
   "typings": "./types/"
