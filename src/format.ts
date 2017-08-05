@@ -1,6 +1,6 @@
 import {invertHashTable} from './utils';
 
-const multiplierPowers = {
+export const multiplierPowers = {
 	bit: -3,
 	byte: 0,
 	kb: 10,
@@ -23,9 +23,9 @@ function capitalizeMultiplier(multiplier: string) {
 	}
 }
 
-type StaticFormat = keyof typeof multiplierPowers | 'auto';
+export type StaticFormat = keyof typeof multiplierPowers | 'auto';
 
-type FuncFormatter = ((size: number) => string | number);
+export type FuncFormatter = ((size: number) => string | number);
 
 export type Format = StaticFormat | FuncFormatter;
 
