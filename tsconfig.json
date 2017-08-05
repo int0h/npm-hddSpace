@@ -8,10 +8,13 @@
         "inlineSourceMap": true,
         "typeRoots": [
             "./node_modules/@types"
-        ]
+        ],
+        "outDir": "./dist",
+        "declaration": true,
+        "declarationDir": "./types"
     },
-    "files": [
-        "./app.ts",
-        "./node_modules/hdd-space/index.ts"
+    "include": [
+        "./src/index.ts",
+        "./src/tests/**/*.ts"
     ]
 }
