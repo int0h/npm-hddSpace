@@ -23,13 +23,16 @@ test('unit case insensetive', t => {
 });
 
 test('auto formatter', t => {
-	t.is(formatSize('auto', 5), '5 Bytes');
-	t.is(formatSize('auto', 5 * (2 ** 10)), '5 KB');
-	t.is(formatSize('auto', 5.2 * (2 ** 20)), '5.2 MB');
-	t.is(formatSize('auto', 750 * (2 ** 20)), '750 MB');
-	t.is(formatSize('auto', 5.9 * (2 ** 40)), '5.9 TB');
-	t.is(formatSize('auto', 5.9 * (2 ** 80)), '5.9 YB');
-	t.is(formatSize('auto', 5 * (2 ** 100)), '5242880 YB');
+	t.is(formatSize('auto', 5), '5.00 Bytes');
+	t.is(formatSize('auto', 5 * (2 ** 10)), '5.00 KB');
+	t.is(formatSize('auto', 5.2 * (2 ** 20)), '5.20 MB');
+	t.is(formatSize('auto', 750 * (2 ** 20)), '750.00 MB');
+	t.is(formatSize('auto', 5.9 * (2 ** 40)), '5.90 TB');
+	t.is(formatSize('auto', 5.9 * (2 ** 80)), '5.90 YB');
+	t.is(formatSize('auto', 5 * (2 ** 100)), '5242880.00 YB');
+	t.is(formatSize('auto', 10 ** 5), '97.66 KB');
+	t.is(formatSize('auto', 10 ** 10), '9.31 GB');
+	t.is(formatSize('auto', 10 ** 7), '9.54 MB');
 });
 
 test('funcion formatter', t => {

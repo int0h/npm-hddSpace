@@ -13,6 +13,8 @@ export const multiplierPowers = {
 	yb: 80
 };
 
+const maxScale = 80;
+
 const invertedMultipliers = invertHashTable(multiplierPowers) as {[key: number]: keyof typeof multiplierPowers};
 
 function capitalizeMultiplier(multiplier: string) {
@@ -29,6 +31,10 @@ export type FuncFormatter = ((size: number) => string | number);
 
 export type Format = StaticFormat | FuncFormatter;
 
+function scaleNumber(n: number, power: number): number {
+	return n / 2 ** power;
+}
+
 export function formatSize(format: Format, size: number): string | number {
 	if (typeof format === 'function') {
 		return (format as FuncFormatter)(size);
@@ -36,15 +42,15 @@ export function formatSize(format: Format, size: number): string | number {
 	const staticFormat = format.toLowerCase() as StaticFormat;
 	if (staticFormat in multiplierPowers) {
 		const power = multiplierPowers[staticFormat as keyof typeof multiplierPowers];
-		return size * (1 / 2 ** power) + ' ' + capitalizeMultiplier(staticFormat);
+		return scaleNumber(size, power) + ' ' + capitalizeMultiplier(staticFormat);
 	}
 	if (staticFormat === 'auto') {
-		const scale = Math.floor(Math.log(size) / Math.log(1024)) * 10;
-		let unit = invertedMultipliers[scale];
-		if (!unit) {
-			unit = scale > 80 ? 'yb' : 'byte';
+		let scale = Math.floor(Math.log(size) / Math.log(1024)) * 10;
+		if (!(scale in invertedMultipliers)) {
+			scale = scale > maxScale ? maxScale : 0;
 		}
-		return formatSize(unit, size);
+		const unit = invertedMultipliers[scale];
+		return scaleNumber(size, scale).toFixed(2) + ' ' + capitalizeMultiplier(unit);
 	}
 	console.error(`Bad format [${staticFormat}]`);
 	return formatSize('byte', size);
