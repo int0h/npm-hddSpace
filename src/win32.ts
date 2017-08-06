@@ -1,5 +1,17 @@
 import {exec as cmd} from 'child_process';
-import {Part, HddInfo, getTotal} from './index';
+import {Part, HddInfo} from './index';
+
+function getTotal(parts: Part[]) {
+	return parts.reduce((total, part) => {
+		total.size += part.size;
+		total.free += part.free;
+		return total;
+	}, {
+		size: 0,
+		free: 0
+	});
+}
+
 /*
 	[wmic logicaldisk get size,freespace,caption] output example:
 
