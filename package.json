@@ -1,88 +1,24 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "hdd-space",
-        "scope": null,
-        "escapedName": "hdd-space",
-        "name": "hdd-space",
-        "rawSpec": "",
-        "spec": "latest",
-        "type": "tag"
-      },
-      "/Users/int/Documents/temp/2"
-    ]
-  ],
-  "_from": "hdd-space@latest",
-  "_id": "hdd-space@1.0.0",
-  "_inCache": true,
-  "_location": "/hdd-space",
-  "_nodeVersion": "0.12.7",
-  "_npmUser": {
-    "name": "int0h",
-    "email": "kvv150794@yandex.ru"
-  },
-  "_npmVersion": "2.11.3",
-  "_phantomChildren": {},
-  "_requested": {
-    "raw": "hdd-space",
-    "scope": null,
-    "escapedName": "hdd-space",
     "name": "hdd-space",
-    "rawSpec": "",
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "https://registry.npmjs.org/hdd-space/-/hdd-space-1.0.0.tgz",
-  "_shasum": "8b5e66148f599cd1af03d22bc81016461d5da888",
-  "_shrinkwrap": null,
-  "_spec": "hdd-space",
-  "_where": "/Users/int/Documents/temp/2",
-  "author": {
-    "name": "int0h"
-  },
-  "bugs": {
-    "url": "https://github.com/int0h/npm-hddSpace/issues"
-  },
-  "dependencies": {
-    "parse-columns": "^1.3.0"
-  },
-  "description": "This module provides getting information about free space and size of hdds",
-  "devDependencies": {
-    "ava": "^0.21.0"
-  },
-  "directories": {},
-  "dist": {
-    "shasum": "8b5e66148f599cd1af03d22bc81016461d5da888",
-    "tarball": "https://registry.npmjs.org/hdd-space/-/hdd-space-1.0.0.tgz"
-  },
-  "gitHead": "b8ea3c853dad4f5753c0154c2eafb7c94b6b20b9",
-  "homepage": "https://github.com/int0h/npm-hddSpace#readme",
-  "keywords": [
-    "hdd",
-    "disk"
-  ],
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "maintainers": [
-    {
-      "name": "int0h",
-      "email": "kvv150794@yandex.ru"
+    "version": "1.1.1",
+    "description": "This module provides getting information about free space and size of hdds",
+    "main": "./dist/index.js",
+    "repository": "https://github.com/int0h/npm-hddSpace.git",
+    "author": "int0h <int0h@yandex.ru>",
+    "license": "MIT",
+    "dependencies": {
+        "parse-columns": "https://github.com/int0h/parse-columns.git#dev"
+    },
+    "devDependencies": {
+        "@types/node": "^8.0.19",
+        "ava": "^0.21.0"
+    },
+    "keywords": [
+        "hdd",
+        "disk"
+    ],
+    "typings": "./types/",
+    "scripts": {
+        "test": "node_modules/.bin/ava -v ./dist/tests"
     }
-  ],
-  "name": "hdd-space",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/int0h/npm-hddSpace.git"
-  },
-  "scripts": {
-    "test": "node_modules/.bin/ava -v ./dist/tests"
-  },
-  "version": "1.1.1",
-  "typings": "./types/"
 }

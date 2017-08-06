@@ -1,4 +1,4 @@
-import * as parseColumns from 'parse-columns';
+import parseColumns from 'parse-columns';
 import {exec as cmd} from 'child_process';
 
 import {Part, HddInfo} from './index';
@@ -21,7 +21,7 @@ function parseDf(output: string): UnixPart[] {
 	};
 	let res: UnixPart[] = [];
 	parseColumns(output, {
-		transform: (value: string | number, header: string, columnIndex: number, rowIndex: number) => {
+		transform: (value, header, columnIndex, rowIndex) => {
 			const key: keyof UnixPart = extractTable[columnIndex];
 			if (!key) {
 				return;
@@ -31,10 +31,7 @@ function parseDf(output: string): UnixPart[] {
 				row = {} as UnixPart;
 				res[rowIndex - 1] = row;
 			}
-			if (key !== 'mp') {
-				value = Number(value);
-			}
-			row[key] = value;
+			row[key] = key === 'mp' ? value : Number(value);
 		}
 	});
 	return res;
