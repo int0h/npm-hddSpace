@@ -12,6 +12,7 @@
     "devDependencies": {
         "@types/node": "^8.0.19",
         "ava": "^0.21.0",
+        "coveralls": "^2.13.1",
         "nyc": "^11.1.0"
     },
     "keywords": [
