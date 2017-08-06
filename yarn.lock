@@ -1990,6 +1990,15 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
+"parse-columns@https://github.com/int0h/parse-columns.git":
+  version "1.3.0"
+  resolved "https://github.com/int0h/parse-columns.git#2318231da6fec1e35aca00a24d58d6b3d9552552"
+  dependencies:
+    escape-string-regexp "^1.0.3"
+    execall "^1.0.0"
+    repeating "^2.0.0"
+    split-at "^1.1.0"
+
 "parse-columns@https://github.com/int0h/parse-columns.git#dev":
   version "1.3.0"
   resolved "https://github.com/int0h/parse-columns.git#1eaac2cb4458e248ebe1c2c806dcf2d3524d9fd4"

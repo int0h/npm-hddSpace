@@ -7,7 +7,7 @@
     "author": "int0h <int0h@yandex.ru>",
     "license": "MIT",
     "dependencies": {
-        "parse-columns": "https://github.com/int0h/parse-columns.git#dev"
+        "parse-columns": "https://github.com/int0h/parse-columns.git"
     },
     "devDependencies": {
         "@types/node": "^8.0.19",
