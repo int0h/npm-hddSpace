@@ -39,3 +39,11 @@ test('funcion formatter', t => {
 	t.is(formatSize(n => n / 1000 + ' KB', 5000), '5 KB');
 	t.is(formatSize(n => n / 1000, 5000), 5);
 });
+
+test('bad format', t => {
+	t.is(formatSize('BAD_FORMAT' as Format, 10), '10 Bytes');
+});
+
+test('bad scale value', t => {
+	t.is(formatSize('auto', 0.001), '0.00 Bytes');
+});

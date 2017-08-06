@@ -66,9 +66,13 @@ export function parseUnixOutput(output: string): HddInfo {
 			}
 			return res;
 		});
+	const total = {
+		size: root.size,
+		free: root.free
+	};
 	return {
 		parts,
-		total: root as Part
+		total
 	};
 }
 

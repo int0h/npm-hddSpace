@@ -31,9 +31,13 @@ export interface FormatedHddInfo {
 	total: FormatedPart;
 }
 
+export type OutputFetcher = (cb: Callback<string>) => void;
+
 export interface Opts {
 	format: Format;
 	output?: string;
+	platform?: 'posix' | 'win32';
+	fetchOutput?: OutputFetcher;
 }
 
 function formatResult(opts: Opts, res: HddInfo): FormatedHddInfo {
@@ -73,8 +77,16 @@ function runCmd(commandFn: (cb: Callback<string>) => void, parser: OutputParser,
 			callback(err);
 			return;
 		}
+		if (!output || output.trim() === '') {
+			callback(new Error('empty output'));
+			return;
+		}
 		try {
-			callback(null, parser(output as string));
+			const result = parser(output as string);
+			if (result.parts.length === 0) {
+				throw new Error('cannot parse output');
+			}
+			callback(null, result);
 		} catch (e) {
 			callback(new Error('cannot parse output'));
 		}
@@ -86,18 +98,20 @@ const defaultOpts: Opts = {
 };
 
 export function getHddInfo(opts: Opts, callback: Callback<FormatedHddInfo>) {
-	const [cmd, parser] = process.platform === 'win32'
+	const platform = opts.platform || process.platform;
+	const [cmd, parser] = platform === 'win32'
 		? [win32Cmd, parseWin32Output]
 		: [unixCmd, parseUnixOutput];
-	const fn: (cb: Callback<string>) => void = opts.output
+	const fn: OutputFetcher = opts.fetchOutput || ('output' in opts
 		? cb => cb(null, opts.output)
-		: exec.bind(null, cmd);
+		: exec.bind(null, cmd));
 	runCmd(fn, parser, (err, result) => {
 		if (err) {
 			callback(err);
 			return;
 		}
-		callback(null, result);
+		const formatted = formatResult(opts, result as HddInfo);
+		callback(null, formatted);
 	});
 }
 
@@ -113,16 +127,19 @@ export function fetchHddInfo(opts: Opts = defaultOpts): Promise<FormatedHddInfo>
 	});
 }
 
-export default function getCrossPlatformInfo(opts: Opts, callback: (res: FormatedHddInfo) => void) {
+export type InfoCallback = (res: FormatedHddInfo) => void;
+
+export default function getCrossPlatformInfo(opts: Opts | InfoCallback, callback?: InfoCallback) {
 	if (arguments.length < 2) {
 		callback = opts as any as (res: FormatedHddInfo) => void;
 		opts = defaultOpts;
 	}
+	opts = opts as Opts;
 	getHddInfo(opts, (err, res) => {
 		if (err) {
 			throw err;
 		}
-		callback(res as FormatedHddInfo);
+		(callback as InfoCallback)(res as FormatedHddInfo);
 	});
 }
 

@@ -11,7 +11,8 @@
     },
     "devDependencies": {
         "@types/node": "^8.0.19",
-        "ava": "^0.21.0"
+        "ava": "^0.21.0",
+        "nyc": "^11.1.0"
     },
     "keywords": [
         "hdd",
@@ -19,6 +20,6 @@
     ],
     "typings": "./types/",
     "scripts": {
-        "test": "node_modules/.bin/ava -v ./dist/tests"
+        "test": "node_modules/.bin/nyc node_modules/.bin/ava -v ./dist/tests"
     }
 }

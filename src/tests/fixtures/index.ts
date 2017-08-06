@@ -8,3 +8,4 @@ export interface Fixture {
 
 export {unixFixtures} from './unix';
 export {win32Fixtures} from './win32';
+export {formatFixtures} from './format';

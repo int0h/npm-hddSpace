@@ -54,9 +54,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 15878561792,
-				free: 14037184512,
-				place: '/',
-				mountOn: '/'
+				free: 14037184512
 			}
 		}
 	},
@@ -148,9 +146,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 73350348800,
-				free: 20355121152,
-				place: '/',
-				mountOn: '/'
+				free: 20355121152
 			}
 		}
 	},
@@ -193,9 +189,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 149464096768,
-				free: 128026873856,
-				place: '/',
-				mountOn: '/'
+				free: 128026873856
 			}
 		}
 	},
@@ -273,9 +267,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 15748431872,
-				free: 12646907904,
-				place: '/',
-				mountOn: '/'
+				free: 12646907904
 			}
 		}
 	},
@@ -353,9 +345,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 143326633984,
-				free: 114804985856,
-				place: '/',
-				mountOn: '/'
+				free: 114804985856
 			}
 		}
 	},
@@ -433,9 +423,7 @@ export const unixFixtures: Fixture[] = [
 			],
 			total: {
 				size: 113035272192,
-				free: 102285635584,
-				place: '/',
-				mountOn: '/'
+				free: 102285635584
 			}
 		}
 	}
