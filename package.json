@@ -1,6 +1,6 @@
 {
     "name": "hdd-space",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "This module provides getting information about free space and size of hdds",
     "main": "./dist/index.js",
     "repository": "https://github.com/int0h/npm-hddSpace.git",
