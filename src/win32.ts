@@ -36,7 +36,7 @@ export function parseWin32Output(output: string): HddInfo {
 				size: parseInt(size)
 			};
 			if (labelOffset !== -1) {
-				partInfo.label = line.slice(labelOffset);
+				partInfo.label = line.slice(labelOffset).trim();
 			}
 			if (
 				isNaN(partInfo.free) ||

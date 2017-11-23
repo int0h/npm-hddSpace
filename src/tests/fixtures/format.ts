@@ -94,15 +94,16 @@ export const formatFixtures: Fixture[] = [
 		`, '\t\t\t'),
 		result: {
 			parts: [{
-					free: '20.84 GB',
-					size: '49.90 GB',
+					free: '463.48 GB',
+					size: '502.01 GB',
 					place: 'C:',
-					letter: 'C:'
+					letter: 'C:',
+					label: 'System'
 				}
 			],
 			total: {
-				free: '20.84 GB',
-				size: '49.95 GB'
+				free: '463.48 GB',
+				size: '502.01 GB'
 			}
 		}
 	}
