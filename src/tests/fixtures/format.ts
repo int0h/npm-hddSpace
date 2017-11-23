@@ -84,5 +84,26 @@ export const formatFixtures: Fixture[] = [
 				size: '49.95 GB'
 			}
 		}
+	},
+
+	{
+		name: 'win32',
+		output: prepareFixture(`
+			Caption  FreeSpace     Size          VolumeName
+			C:       497654161408  539028877312  System
+		`, '\t\t\t'),
+		result: {
+			parts: [{
+					free: '20.84 GB',
+					size: '49.90 GB',
+					place: 'C:',
+					letter: 'C:'
+				}
+			],
+			total: {
+				free: '20.84 GB',
+				size: '49.95 GB'
+			}
+		}
 	}
 ];

@@ -11,6 +11,7 @@ export interface Part {
 	letter?: string;
 	mountOn?: string;
 	place?: string;
+	label?: string;
 }
 
 export interface HddInfo {
@@ -24,6 +25,7 @@ export interface FormatedPart {
 	letter?: string | number;
 	mountOn?: string;
 	place?: string;
+	label?: string;
 }
 
 export interface FormatedHddInfo {
@@ -54,6 +56,9 @@ function formatResult(opts: Opts, res: HddInfo): FormatedHddInfo {
 			}
 			if ('mountOn' in part) {
 				newPart.mountOn = part.mountOn;
+			}
+			if ('label' in part) {
+				newPart.label = part.label;
 			}
 			return newPart;
 		}),
@@ -88,6 +93,7 @@ function runCmd(commandFn: (cb: Callback<string>) => void, parser: OutputParser,
 			}
 			callback(null, result);
 		} catch (e) {
+			console.error(e);
 			callback(new Error('cannot parse output'));
 		}
 	});

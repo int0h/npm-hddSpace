@@ -13,29 +13,31 @@ function getTotal(parts: Part[]) {
 }
 
 /*
-	[wmic logicaldisk get size,freespace,caption] output example:
+	[wmic logicaldisk get size,freespace,caption,volumename] output example:
 
-	Caption  FreeSpace	Size
-	C:	   1286164480   34359734272
-	D:	   1864638464   50925137920
-	E:
-	F:	   77553082368  990202818560
-	G:
-	L:
+	Caption  FreeSpace     Size          VolumeName
+	C:       497654161408  539028877312  System
+	D:
+
 */
 
 export function parseWin32Output(output: string): HddInfo {
-	const parts = output
-		.split('\n')
+	const lines = output
+		.split('\n');
+	const labelOffset = lines[0].indexOf('VolumeName');
+	const parts = lines
 		.slice(1) // remove header
-		.map(function(line){
-			const lineParts = line.split(/[\s]+/g);
-			const partInfo: Part = {
-				place: lineParts[0],
-				letter: lineParts[0],
-				free: parseInt(lineParts[1]),
-				size: parseInt(lineParts[2])
+		.map(line => {
+			const [letter, free, size] = line.split(/[\s]+/g);
+			let partInfo: Part = {
+				place: letter,
+				letter,
+				free: parseInt(free),
+				size: parseInt(size)
 			};
+			if (labelOffset !== -1) {
+				partInfo.label = line.slice(labelOffset);
+			}
 			if (
 				isNaN(partInfo.free) ||
 				isNaN(partInfo.size) ||
@@ -45,7 +47,7 @@ export function parseWin32Output(output: string): HddInfo {
 			}
 			return partInfo;
 		})
-		.filter(function(part){
+		.filter(part => {
 			return !!part;
 		}) as Part[];
 	return {
@@ -54,4 +56,4 @@ export function parseWin32Output(output: string): HddInfo {
 	};
 }
 
-export const win32Cmd = 'wmic logicaldisk get size,freespace,caption';
+export const win32Cmd = 'wmic logicaldisk get size,freespace,caption,volumename';

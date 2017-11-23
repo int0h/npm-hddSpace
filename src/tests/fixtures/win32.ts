@@ -169,5 +169,28 @@ export const win32Fixtures: Fixture[] = [
 				free: 159345410048
 			}
 		}
+	},
+
+	{
+		name: 'labels',
+		output: prepareFixture(`
+			Caption  FreeSpace     Size          VolumeName
+			C:       497654161408  539028877312  System
+		`, '\t\t\t'),
+		result: {
+			parts: [
+				{
+					place: 'C:',
+					letter: 'C:',
+					free: 497654161408,
+					size: 539028877312,
+					label: 'System'
+				}
+			],
+			total: {
+				size: 539028877312,
+				free: 497654161408
+			}
+		}
 	}
 ];
